@@ -10,6 +10,7 @@ func Test_LoadConfig(t *testing.T) {
 
 	expect(t, err, nil)
 	expect(t, config.Port, 5678)
+	expect(t, config.Host, "1.2.3.4")
 	expect(t, config.ProxyTo, "http://localhost:3000")
 }
 

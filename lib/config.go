@@ -7,6 +7,7 @@ import (
 )
 
 type Config struct {
+	Host	string    `json:"host"`
 	Port    int    `json:"port"`
 	ProxyTo string `json:"proxy_to"`
 }

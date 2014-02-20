@@ -1,11 +1,11 @@
 package main
 
 import (
+	"github.com/shirro/gin/lib"
 	"errors"
 	"fmt"
 	"github.com/codegangsta/cli"
 	"github.com/codegangsta/envy/lib"
-	"github.com/codegangsta/gin/lib"
 	"log"
 	"os"
 	"path/filepath"
@@ -25,6 +25,7 @@ func main() {
 	app.Usage = "A live reload utility for Go web applications."
 	app.Action = MainAction
 	app.Flags = []cli.Flag{
+		cli.StringFlag{"host,l", "127.0.0.1", "listen address for the proxy server"},
 		cli.IntFlag{"port,p", 3000, "port for the proxy server"},
 		cli.IntFlag{"appPort,a", 3001, "port for the Go web server"},
 		cli.StringFlag{"bin,b", "gin-bin", "name of generated binary file"},
@@ -50,6 +51,7 @@ func main() {
 func MainAction(c *cli.Context) {
 	port := c.GlobalInt("port")
 	appPort := strconv.Itoa(c.GlobalInt("appPort"))
+	host := c.GlobalString("host")
 
 	// Bootstrap the environment
 	envy.Bootstrap()
@@ -68,6 +70,7 @@ func MainAction(c *cli.Context) {
 	proxy := gin.NewProxy(builder, runner)
 
 	config := &gin.Config{
+		Host:    host,
 		Port:    port,
 		ProxyTo: "http://localhost:" + appPort,
 	}
